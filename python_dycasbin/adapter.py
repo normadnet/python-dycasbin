@@ -12,9 +12,7 @@ class Adapter(persist.Adapter):
         self.table_name = table_name
         self.dynamodb = boto3.client('dynamodb', **kwargs)
         self.dynamodb_resource = boto3.resource('dynamodb', **kwargs)
-
         try:
-
             self.dynamodb.create_table(
                 TableName=self.table_name,
                 AttributeDefinitions=[
