@@ -17,7 +17,6 @@ class Adapter(persist.Adapter):
 
             self.dynamodb.create_table(
                 TableName=self.table_name,
-
                 AttributeDefinitions=[
                     {
                         'AttributeName': 'id',
@@ -30,11 +29,10 @@ class Adapter(persist.Adapter):
                         'KeyType': 'HASH'
                     },
                 ],
-                ProvisionedThroughput={
-                    'ReadCapacityUnits': 10,
-                    'WriteCapacityUnits': 10
-                }
+                BillingMode='PAY_PER_REQUEST'
             )
+            #wait till the table is ready
+            self.dynamodb.get_waiter('table_exists').wait(TableName=self.table_name)
         except self.dynamodb.exceptions.ResourceInUseException:
             pass
 
